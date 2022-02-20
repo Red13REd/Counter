@@ -6,9 +6,10 @@ type InputType = {
     callBack: (number: number) => void
     className: boolean
     onFocusHandler:()=>void
+    value:number
 }
 
-export const Input: React.FC<InputType> = ({onFocusHandler,title, callBack, className}) => {
+export const Input: React.FC<InputType> = ({value,onFocusHandler,title, callBack, className}) => {
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let number = parseInt(e.currentTarget.value, 10)
@@ -21,7 +22,7 @@ export const Input: React.FC<InputType> = ({onFocusHandler,title, callBack, clas
 
 
     return (
-        <div>{title} <input onFocus={onChangeHandlerBlur} className={className ? "input" : "input-error"} type="number"
+        <div>{title} <input value={value} onFocus={onChangeHandlerBlur} className={className ? "input" : "input-error"} type="number"
                             onChange={onChangeHandler}/></div>
     );
 };

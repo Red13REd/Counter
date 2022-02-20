@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Counter} from "./Counter";
 import {Set} from "./components/Set";
@@ -13,6 +13,33 @@ function App() {
     const [numberMax, setNumberMax] = useState<number>(0)
 
     const [onFocus, setonFocus] = useState<string>("")
+
+    useEffect(() => {
+        let initialValueAsString = localStorage.getItem("initialValue")
+        let numberStartAsString = localStorage.getItem("numberStart")
+        let numberMaxAsString = localStorage.getItem("numberMax")
+        let startAsString = localStorage.getItem("start")
+
+
+        if (startAsString && numberMaxAsString && numberStartAsString && initialValueAsString ) {
+            let newInitialValue = JSON.parse(numberStartAsString)
+            let newNumberStart = JSON.parse(numberStartAsString)
+            let newNumberMax = JSON.parse(numberMaxAsString)
+            let newStartAsString = JSON.parse(startAsString)
+            setValue(newInitialValue)
+            setNumberStart(newNumberStart)
+            setNumberMax(newNumberMax)
+            setStart(newStartAsString)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem("initialValue", JSON.stringify(value))
+        localStorage.setItem("numberStart", JSON.stringify(numberStart))
+        localStorage.setItem("numberMax", JSON.stringify(numberMax))
+        localStorage.setItem("start", JSON.stringify(start))
+    }, [value, numberStart, numberMax, start])
+
 
 
     const disabledButton = numberStart < 0 || numberMax < 0 || numberStart >= numberMax

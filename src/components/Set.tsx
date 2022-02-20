@@ -33,8 +33,8 @@ const cllassNameHandlerStart = numberStart >= 0
     return (
         <div className={"set-wrapper"}>
             <div className={"input-wrapper"}>
-                <Input onFocusHandler={onFocusHandler} className={cllassNameHandlerMax} title={"max value"} callBack={onClickHandlerInputMax}/>
-                <Input onFocusHandler={onFocusHandler} className={cllassNameHandlerStart} title={"start value"} callBack={onClickHandlerInputStart}/>
+                <Input value={numberMax} onFocusHandler={onFocusHandler} className={cllassNameHandlerMax} title={"max value"} callBack={onClickHandlerInputMax}/>
+                <Input value={numberStart} onFocusHandler={onFocusHandler} className={cllassNameHandlerStart} title={"start value"} callBack={onClickHandlerInputStart}/>
             </div>
             <div className={'button-wrapper'}>
                 <Button title={"set"} callBack={onClickHandlerSetButton} disabled={disabledButton}/>

@@ -1,0 +1,27 @@
+.set-wrapper{
+    border: 3px solid #61dafb;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.input-wrapper{
+    border: 2px solid #61dafb;
+    border-radius: 20px;
+    min-width: 450px;
+    min-height: 150px;
+    color: #61dafb;
+    font-size: 35px;
+    text-align: center;
+    padding-top: 50px;
+    font-weight: bold;
+}
+
+.button-wrapper{
+    border: 2px solid #61dafb;
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    min-height: 55px;
+}

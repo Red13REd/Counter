@@ -1,0 +1,27 @@
+input:focus {
+    background-color: lightblue;
+    border:3px solid darkslategrey;
+}
+
+input{
+    border:3px solid darkslategrey;
+    padding: 7px 3px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+
+.input-error{
+    border:3px solid darkred;
+    padding: 7px 3px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bolder;
+    background-color: tomato;
+}
+
+.input-error:focus{
+    background-color: tomato;
+    border:3px solid darkred;
+}

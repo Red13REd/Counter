@@ -1,43 +1,43 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import {Button} from "./components/Button";
 import "./counter.css";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./Redux/ReactRedux";
+import {incInitialValueAC, resetStartValueAC, stateType} from "./Redux/ReducerCounter";
 
 export type CounterType = {
-    initialValue: number
-    error: number
-    setValue: Dispatch<SetStateAction<number>>
-    start: number
     showError: boolean
-    onFocus: string
 }
 
-export const Counter: React.FC<CounterType> = ({onFocus, initialValue, error, setValue, start, showError}) => {
+export const Counter: React.FC<CounterType> = ({ showError,}) => {
 
+    const state = useSelector<AppRootStateType,stateType>(state => state.Counter)
+    const dispatch = useDispatch()
 
     const onClickHandlerInc = () => {
-        setValue(initialValue + 1)
+        dispatch(incInitialValueAC())
     }
 
     const onClickHandlerReset = () => {
-        setValue(start)
+        dispatch(resetStartValueAC(state.start))
     }
 
     const onHandlerText = () => {
         if (showError) {
             return "incorrect-value"
-        } else if (onFocus) {
-            return onFocus
+        } else if (state.onFocus) {
+            return state.onFocus
         } else {
-            return initialValue
+            return state.value
         }
     }
 
     const onHandlerClassName = () => {
         if (showError) {
             return "incorrect-value"
-        } else if (onFocus) {
+        } else if (state.onFocus) {
             return "onFocus"
-        } else if (initialValue == error) {
+        } else if (state.value == state.error) {
             return "value-end"
         } else {
             return "value"
@@ -51,10 +51,10 @@ export const Counter: React.FC<CounterType> = ({onFocus, initialValue, error, se
             </div>
             <div className={"buttons-wrapper"}>
                 <div>
-                    <Button title={"inc"} disabled={error === initialValue} callBack={onClickHandlerInc}/>
+                    <Button title={"inc"} disabled={state.error === state.value || state.disabled} callBack={onClickHandlerInc}/>
                 </div>
                 <div>
-                    <Button title={"reset"} disabled={initialValue <= 0} callBack={onClickHandlerReset}/>
+                    <Button title={"reset"} disabled={state.value <= 0 || state.disabled} callBack={onClickHandlerReset}/>
                 </div>
 
             </div>

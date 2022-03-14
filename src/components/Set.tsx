@@ -1,40 +1,45 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import {Input} from "./Input";
 import {Button} from "./Button";
 import './set.css'
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../Redux/ReactRedux";
+import {setDisabledAC, setNumberMaxAC, setNumberStartAC, stateType} from "../Redux/ReducerCounter";
 
 
 type SetType = {
     onClickHandlerSetButton: () => void
-    setNumberMax:Dispatch<SetStateAction<number>>
-    setNumberStart:Dispatch<SetStateAction<number>>
-    disabledButton:boolean
-    numberMax:number
-    numberStart:number
-    onFocusHandler:()=>void
+    disabledButton: boolean
+    onFocusHandler: () => void
 }
 
 
-export const Set: React.FC<SetType> = ({onFocusHandler,numberMax,numberStart,onClickHandlerSetButton,setNumberMax,setNumberStart,disabledButton}) => {
+export const Set: React.FC<SetType> = ({onFocusHandler, onClickHandlerSetButton, disabledButton}) => {
 
+    const state = useSelector<AppRootStateType, stateType>(state => state.Counter)
+    const dispatch = useDispatch()
 
     const onClickHandlerInputMax = (number: number) => {
-            setNumberMax(number)
+        dispatch(setNumberMaxAC(number))
+        dispatch(setDisabledAC(true))
     }
 
     const onClickHandlerInputStart = (number: number) => {
-            setNumberStart(number)
+        dispatch(setNumberStartAC(number))
+        dispatch(setDisabledAC(true))
     }
 
-
-const cllassNameHandlerMax = numberMax >= 0
-const cllassNameHandlerStart = numberStart >= 0
+    const classNameHandler = state.numberMax !== state.numberStart
+    const classNameHandlerMax = state.numberMax >= 0
+    const classNameHandlerStart = state.numberStart >= 0
 
     return (
         <div className={"set-wrapper"}>
             <div className={"input-wrapper"}>
-                <Input value={numberMax} onFocusHandler={onFocusHandler} className={cllassNameHandlerMax} title={"max value"} callBack={onClickHandlerInputMax}/>
-                <Input value={numberStart} onFocusHandler={onFocusHandler} className={cllassNameHandlerStart} title={"start value"} callBack={onClickHandlerInputStart}/>
+                <Input value={state.numberMax} onFocusHandler={onFocusHandler} className={classNameHandlerMax }
+                       title={"max value"} callBack={onClickHandlerInputMax}/>
+                <Input value={state.numberStart} onFocusHandler={onFocusHandler} className={classNameHandlerStart}
+                       title={"start value"} callBack={onClickHandlerInputStart}/>
             </div>
             <div className={'button-wrapper'}>
                 <Button title={"set"} callBack={onClickHandlerSetButton} disabled={disabledButton}/>

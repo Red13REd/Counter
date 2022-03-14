@@ -1,18 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Counter} from "./Counter";
 import {Set} from "./components/Set";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "./Redux/ReactRedux";
+import {
+    setDisabledAC,
+    setErrorAC,
+    setNumberMaxAC,
+    setNumberStartAC,
+    setOnFocusAC,
+    setStartAC,
+    setValueAC,
+    stateType
+} from "./Redux/ReducerCounter";
 
 function App() {
 
-    const [value, setValue] = useState<number>(0)
-    const [start, setStart] = useState<number>(0)
-    const [error, setError] = useState<number>(0)
+    const state = useSelector<AppRootStateType, stateType>(state => state.Counter)
+    const dispatch = useDispatch()
 
-    const [numberStart, setNumberStart] = useState<number>(0)
-    const [numberMax, setNumberMax] = useState<number>(0)
-
-    const [onFocus, setonFocus] = useState<string>("")
 
     useEffect(() => {
         let initialValueAsString = localStorage.getItem("initialValue")
@@ -21,59 +28,50 @@ function App() {
         let startAsString = localStorage.getItem("start")
 
 
-        if (startAsString && numberMaxAsString && numberStartAsString && initialValueAsString ) {
+        if (startAsString && numberMaxAsString && numberStartAsString && initialValueAsString) {
             let newInitialValue = JSON.parse(numberStartAsString)
             let newNumberStart = JSON.parse(numberStartAsString)
             let newNumberMax = JSON.parse(numberMaxAsString)
             let newStartAsString = JSON.parse(startAsString)
-            setValue(newInitialValue)
-            setNumberStart(newNumberStart)
-            setNumberMax(newNumberMax)
-            setStart(newStartAsString)
+            dispatch(setValueAC(newInitialValue))
+            dispatch(setNumberStartAC(newNumberStart))
+            dispatch(setNumberMaxAC(newNumberMax))
+            dispatch(setStartAC(newStartAsString))
         }
     }, [])
 
     useEffect(() => {
-        localStorage.setItem("initialValue", JSON.stringify(value))
-        localStorage.setItem("numberStart", JSON.stringify(numberStart))
-        localStorage.setItem("numberMax", JSON.stringify(numberMax))
-        localStorage.setItem("start", JSON.stringify(start))
-    }, [value, numberStart, numberMax, start])
+        localStorage.setItem("initialValue", JSON.stringify(state.value))
+        localStorage.setItem("numberStart", JSON.stringify(state.numberStart))
+        localStorage.setItem("numberMax", JSON.stringify(state.numberMax))
+        localStorage.setItem("start", JSON.stringify(state.start))
+    }, [state.value, state.numberStart, state.numberMax, state.start])
 
 
-
-    const disabledButton = numberStart < 0 || numberMax < 0 || numberStart >= numberMax
+    const disabledButton =  state.numberStart < 0 || state.numberMax < 0 || state.numberStart >= state.numberMax
 
 
     const onClickHandlerSetButton = () => {
-        setValue(numberStart)
-        setError(numberMax)
-        setStart(numberStart)
-        setonFocus("")
+        dispatch(setValueAC(state.numberStart))
+        dispatch(setErrorAC(state.numberMax))
+        dispatch(setStartAC(state.numberStart))
+        dispatch(setOnFocusAC(false))
+        dispatch(setDisabledAC(false))
     }
 
     const onFocusHandler = () => {
-        setonFocus("enter values and press 'set'")
+        dispatch(setOnFocusAC(true))
     }
 
     return (
         <div className={"App-header"}>
             <div>
                 <Counter showError={disabledButton}
-                         start={start}
-                         error={error}
-                         initialValue={value}
-                         setValue={setValue}
-                         onFocus={onFocus}
                 />
             </div>
             <div className={"set"}>
-                <Set disabledButton={disabledButton}
-                     setNumberMax={setNumberMax}
-                     setNumberStart={setNumberStart}
+                <Set disabledButton={ disabledButton}
                      onClickHandlerSetButton={onClickHandlerSetButton}
-                     numberStart={numberStart}
-                     numberMax={numberMax}
                      onFocusHandler={onFocusHandler}
                 />
             </div>

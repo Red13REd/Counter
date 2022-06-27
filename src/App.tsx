@@ -1,7 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
-import {Counter} from "./Counter";
-import {Set} from "./components/Set";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./Redux/ReactRedux";
 import {
@@ -14,13 +12,17 @@ import {
     setValueAC,
     stateType
 } from "./Redux/ReducerCounter";
+import {Link, Navigate, Route, Routes} from 'react-router-dom';
+import {CounterV2} from "./CounterV2";
+import {CounterV1} from "./CounterV1";
 
 function App() {
 
     const state = useSelector<AppRootStateType, stateType>(state => state.Counter)
     const dispatch = useDispatch()
 
-
+    const [changeVersion, setChangeVersion] = useState<boolean>(false)
+    const [setPress, setSetPress] = useState<boolean>(false)
     useEffect(() => {
         let initialValueAsString = localStorage.getItem("initialValue")
         let numberStartAsString = localStorage.getItem("numberStart")
@@ -48,7 +50,7 @@ function App() {
     }, [state.value, state.numberStart, state.numberMax, state.start])
 
 
-    const disabledButton =  state.numberStart < 0 || state.numberMax < 0 || state.numberStart >= state.numberMax
+    const disabledButton = state.numberStart < 0 || state.numberMax < 0 || state.numberStart >= state.numberMax
 
 
     const onClickHandlerSetButton = () => {
@@ -57,6 +59,7 @@ function App() {
         dispatch(setStartAC(state.numberStart))
         dispatch(setOnFocusAC(false))
         dispatch(setDisabledAC(false))
+        setSetPress(!setPress)
     }
 
     const onFocusHandler = () => {
@@ -65,18 +68,39 @@ function App() {
 
     return (
         <div className={"App-header"}>
-            <div>
-                <Counter showError={disabledButton}
-                />
-            </div>
-            <div className={"set"}>
-                <Set disabledButton={ disabledButton}
-                     onClickHandlerSetButton={onClickHandlerSetButton}
-                     onFocusHandler={onFocusHandler}
-                />
-            </div>
-
-
+            {changeVersion
+                ? <Link
+                    onClick={() => setChangeVersion(!changeVersion)}
+                    to="/"
+                    className={"button-change"}>
+                    Go to counter version 1</Link>
+                : <Link
+                    onClick={() => setChangeVersion(!changeVersion)}
+                    to="/CounterV2"
+                    className={"button-change"}>
+                    Go to counter version 2</Link>
+            }
+            <Routes>
+                <Route path="/"
+                       element={<CounterV1
+                           onClickHandlerSetButton={onClickHandlerSetButton}
+                           disabledButton={disabledButton}
+                           onFocusHandler={onFocusHandler}/>}/>
+                <Route path="/CounterV2"
+                       element={<CounterV2
+                           setPress={setPress}
+                           setSetPress={setSetPress}
+                           onClickHandlerSetButton={onClickHandlerSetButton}
+                           disabledButton={disabledButton}
+                       />}/>
+                <Route path="/404" element={<div>
+                    <h1>404: PAGE NOT FOUND</h1>
+                    <button className={"button-change"} onClick={() => <Navigate to="/"/>
+                    }>Back home
+                    </button>
+                </div>}/>
+                <Route path="*" element={<Navigate to="/404"/>}/>
+            </Routes>
         </div>
 
     );

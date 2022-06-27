@@ -1,10 +1,10 @@
 import React from 'react';
 import {Input} from "./Input";
-import {Button} from "./Button";
 import './set.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../Redux/ReactRedux";
 import {setDisabledAC, setNumberMaxAC, setNumberStartAC, stateType} from "../Redux/ReducerCounter";
+import {Button} from "./Button";
 
 
 type SetType = {
@@ -29,20 +29,19 @@ export const Set: React.FC<SetType> = ({onFocusHandler, onClickHandlerSetButton,
         dispatch(setDisabledAC(true))
     }
 
-    const classNameHandler = state.numberMax !== state.numberStart
     const classNameHandlerMax = state.numberMax >= 0
     const classNameHandlerStart = state.numberStart >= 0
 
     return (
         <div className={"set-wrapper"}>
             <div className={"input-wrapper"}>
-                <Input value={state.numberMax} onFocusHandler={onFocusHandler} className={classNameHandlerMax }
+                <Input value={state.numberMax} onFocusHandler={onFocusHandler} className={classNameHandlerMax}
                        title={"max value"} callBack={onClickHandlerInputMax}/>
                 <Input value={state.numberStart} onFocusHandler={onFocusHandler} className={classNameHandlerStart}
                        title={"start value"} callBack={onClickHandlerInputStart}/>
-            </div>
-            <div className={'button-wrapper'}>
-                <Button title={"set"} callBack={onClickHandlerSetButton} disabled={disabledButton}/>
+                <div className={'button-wrapper'}>
+                    <Button title={"set"} callBack={onClickHandlerSetButton} disabled={disabledButton}/>
+                </div>
             </div>
         </div>
     );

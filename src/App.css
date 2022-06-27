@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  position: relative;
 }
 
 
@@ -23,3 +24,33 @@
   margin-right: 30px;
 }
 
+.button {
+  transition-duration: 0.4s;
+}
+
+.button-change {
+  position: absolute;
+  top: 100px;
+  background-color: #61dafb; /* Green */
+  border: none;
+  color: black;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 25px;
+  border-radius: 10px;
+  font-weight: 900;
+}
+
+.button-change:hover {
+
+  background-color: #2b98b4;
+  color: black;
+}
+
+
+.button-change:disabled {
+  opacity: 0.3;
+
+}
